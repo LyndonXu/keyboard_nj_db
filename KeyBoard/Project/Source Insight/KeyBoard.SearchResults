@@ -1,0 +1,13 @@
+---- MsgOutGetEnd Matches (12 in 4 files) ----
+Main.c (project\keyboard\src):		MsgOutGetEnd();
+Main.c (project\keyboard\src):		MsgOutGetEnd();
+Main.c (project\keyboard\src):			MsgOutGetEnd();
+Message.c (project\keyboard\src):void MsgOutGetEnd(void)
+Message.h (project\keyboard\inc):void MsgOutGetEnd(void);
+Protocol.c (project\keyboard\src):		MsgOutGetEnd();
+Protocol.c (project\keyboard\src):	MsgOutGetEnd();
+Protocol.c (project\keyboard\src):	MsgOutGetEnd();
+Protocol.c (project\keyboard\src):	MsgOutGetEnd();
+Protocol.c (project\keyboard\src):	MsgOutGetEnd();
+Protocol.c (project\keyboard\src):	MsgOutGetEnd();
+Protocol.c (project\keyboard\src):			MsgOutGetEnd();
