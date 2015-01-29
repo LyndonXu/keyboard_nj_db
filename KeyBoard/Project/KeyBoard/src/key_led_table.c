@@ -10,15 +10,15 @@ u8 g_u8KeyTable[KEY_Y_CNT][KEY_X_CNT] =
 	{
 		_Key_Record_Record, _Key_Record_Live, _Key_Record_Snap, _Key_Record_ChannelRecord,
 		_Key_Delay_Broadcast_Live_Stop, _Key_Delay_Broadcast_Express,
-		_Key_Delay_Broadcast_Safe, _Key_Caption,
+		_Key_Delay_Broadcast_Safe, _Key_Listen,
 	},	/* 1 */
 	{
 		_Key_VI_V1, _Key_VI_V2, _Key_VI_V3, _Key_VI_V4, 
 		_Key_VI_1, _Key_VI_2, _Key_VI_3, _Key_VI_4, 
 	},	/* 2 */
 	{
-		_Key_Angle1, _Key_Angle2, _Key_Time, _Key_DDR_1,
-		_Key_DDR_Back, _Key_DDR_Play_Pause, _Key_DDR_Cycle, _Key_DDR_Auto,
+		_Key_Look, _Key_Projection, _Key_Multi_Views, _Key_DDR_1,
+		_Key_DDR_Back, _Key_DDR_Play, _Key_DDR_Cycle, _Key_DDR_Auto,
 	},	/* 3 */
 	{
 		_Key_VI_Auto, _Key_Switch_1, _Key_Switch_2, _Key_DDR_2,
@@ -39,13 +39,11 @@ u8 g_u8KeyTable[KEY_Y_CNT][KEY_X_CNT] =
 	},	/* 7 */
 	{
 		_Key_PVW_V1, _Key_PVW_V2, _Key_PVW_V3, _Key_PVW_V4,
-		_Key_Trick_Shortcut_1, _Key_Trick_Shortcut_2,
-		_Key_Trick_Shortcut_3, _Key_Trick_Shortcut_4,
+		_Key_Trick_Slide, _Key_Trick_Flexible, _Key_Trick_3D, _Key_Trick_Switch,
 				
 	},	/* 8 */
 	{
-		_Key_Trick_Shortcut_5, _Key_Trick_Shortcut_6,
-		_Key_Trick_Shortcut_7, _Key_Trick_Shortcut_8,
+		_Key_Caption, _Key_Angle1, _Key_Angle2, _Key_Time,
 		_Key_Positoin_Caption, _Key_Positoin_Angle1,
 		_Key_Positoin_Angle2, _Key_Positoin_Time,
 					
@@ -56,12 +54,12 @@ u8 g_u8KeyTable[KEY_Y_CNT][KEY_X_CNT] =
 	},	/* 10 */ 
 	{
 		_Key_Positoin_1, _Key_Positoin_2, _Key_Positoin_3, _Key_Positoin_4,
-		_Key_Positoin_ZOOM, 
+		_Key_DDR_Pause, _Key_Trick_Shortcut_1, 0, 0,
 	},	/* 11 */
 	{
 		_Key_Positoin_VIN_1, _Key_Positoin_VIN_2, 
 		_Key_Positoin_VIN_3, _Key_Positoin_VIN_4,
-		_Key_Positoin_Aus,					
+		_Key_Positoin_Aus, 0, 0, 0,
 	},	/* 12 */
 };
 

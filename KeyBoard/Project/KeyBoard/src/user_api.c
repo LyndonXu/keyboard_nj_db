@@ -96,4 +96,30 @@ void SysTick_Handler(void)
 	g_u32SysTickCnt ++;
 }
 
+void UartSendData(USART_TypeDef *pUart, const u8 *pBuf, u32 u32Length)
+{
+
+	if ((pUart == NULL) || (pBuf == NULL) || (u32Length == 0))
+	{
+		return;
+	}
+	else
+	{
+		u32 u32SendCnt = 0;
+		while(USART_GetFlagStatus(pUart, USART_FLAG_TXE) == RESET)
+		{
+		}
+		while(u32SendCnt < u32Length)
+		{
+			USART_SendData(pUart, pBuf[u32SendCnt]);
+
+			/* Loop until USARTy DR register is empty */ 
+			while(USART_GetFlagStatus(pUart, USART_FLAG_TXE) == RESET)
+			{
+			}
+			u32SendCnt++;
+		}
+
+	}
+}
 

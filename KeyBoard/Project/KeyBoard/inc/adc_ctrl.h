@@ -116,7 +116,7 @@ typedef struct _tagStPushRodState
 {
 	u8 u8PushRodValue;		
 	u8 u8PushRodOldValue;		
-	u8 u8PushRodLEDValue;
+	u16 u16PushRodRealValue;
 }StPushRodState;
 
 extern bool g_boIsPushRodNeedReset;

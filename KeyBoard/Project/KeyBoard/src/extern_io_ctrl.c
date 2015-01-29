@@ -13,69 +13,74 @@
 #include "extern_io_ctrl.h"
 
 
-GPIO_TypeDef * const c_pIOPort[IO_CNT] = 
-{
-	IO_PORT_1,
-	IO_PORT_2,
-	IO_PORT_3,
-	IO_PORT_4,
-	IO_PORT_5,
-	IO_PORT_6,
-	IO_PORT_7,
-	IO_PORT_8,
-	IO_PORT_9,
-	IO_PORT_10,
-	IO_PORT_11,
-	IO_PORT_12,
-	IO_PORT_13,
-	IO_PORT_14,
-	IO_PORT_15,
-	IO_PORT_16,
-};
 
-const u16 c_u16IOPin[IO_CNT] = 
-{
-	IO_1,
-	IO_2,
-	IO_3,
-	IO_4,
-	IO_5,
-	IO_6,
-	IO_7,
-	IO_8,
-	IO_9,
-	IO_10,
-	IO_11,
-	IO_12,
-	IO_13,
-	IO_14,
-	IO_15,
-	IO_16,
-};
+static u8 s_u8ExternIO[(IO_CNT + 7) / 8];
 
 void ExternIOInit(void)
 {	
 	GPIO_InitTypeDef GPIO_InitStructure;
-	u32 i;
 	
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 
-	for (i = 0; i < IO_CNT; i++)
-	{
-		GPIO_InitStructure.GPIO_Pin = c_u16IOPin[i];
-		GPIO_Init(c_pIOPort[i], &GPIO_InitStructure);
-		GPIO_WriteBit(c_pIOPort[i], c_u16IOPin[i], Bit_SET);
-	}
+	GPIO_InitStructure.GPIO_Pin = SHIFT_CLOCK_PIN;
+	GPIO_Init(SHIFT_CLOCK_PORT, &GPIO_InitStructure);
+	GPIO_WriteBit(SHIFT_CLOCK_PORT, SHIFT_CLOCK_PIN, Bit_RESET);
+
+	GPIO_InitStructure.GPIO_Pin = SHIFT_CLEAR_PIN;
+	GPIO_Init(SHIFT_CLEAR_PORT, &GPIO_InitStructure);
+	GPIO_WriteBit(SHIFT_CLEAR_PORT, SHIFT_CLEAR_PIN, Bit_RESET);
+
+	GPIO_InitStructure.GPIO_Pin = SHIFT_DATA_PIN;
+	GPIO_Init(SHIFT_DATA_PORT, &GPIO_InitStructure);
+	GPIO_WriteBit(SHIFT_DATA_PORT, SHIFT_DATA_PIN, Bit_RESET);
+
 }
+
+void ExternIOClear(void)
+{
+	memset(s_u8ExternIO, 0, sizeof(s_u8ExternIO));
+	GPIO_WriteBit(SHIFT_CLEAR_PORT, SHIFT_CLEAR_PIN, Bit_RESET);
+}
+
 
 void ExternIOCtrl(u8 u8Index, BitAction emAction)
 {
+	s32 i;
+	u32 u32Hight, u32Low;
 	if (u8Index >= IO_CNT)
 	{
 		return;
 	}
-	GPIO_WriteBit(c_pIOPort[u8Index], c_u16IOPin[u8Index], emAction);
+	u32Hight = u8Index >> 3;
+	u32Low = u8Index & 0x07;
+	if (emAction == Bit_RESET)
+	{
+		s_u8ExternIO[u32Hight] &= (~(1 << u32Low));
+	}
+	else
+	{
+		s_u8ExternIO[u32Hight] |= (1 << u32Low);
+	}
+	
+	GPIO_WriteBit(SHIFT_CLEAR_PORT, SHIFT_CLEAR_PIN, Bit_SET);
+	for (i = IO_CNT - 1; i >= 0; i--)
+	{
+		u32Hight = i >> 3;
+		u32Low = i & 0x07;
+		if (((s_u8ExternIO[u32Hight] >> u32Low) & 0x01) != 0)
+		{
+			emAction = Bit_SET;
+		}
+		else
+		{
+			emAction = Bit_RESET;
+		}
+		
+		GPIO_WriteBit(SHIFT_DATA_PORT, SHIFT_DATA_PIN, emAction);
+		GPIO_WriteBit(SHIFT_CLOCK_PORT, SHIFT_CLOCK_PIN, Bit_RESET);
+		GPIO_WriteBit(SHIFT_CLOCK_PORT, SHIFT_CLOCK_PIN, Bit_SET);
+	}
 }
 
 

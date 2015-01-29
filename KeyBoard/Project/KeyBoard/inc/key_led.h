@@ -132,6 +132,14 @@
 #define LED_POWER_PORT_11		GPIOD
 #define LED_POWER_PORT_12		GPIOD
 
+#define LED_POWER_TRANSFORM_ENABLE_PORT		GPIOD
+#define LED_POWER_TRANSFORM_DIR_PORT		GPIOD
+
+#define LED_POWER_TRANSFORM_ENABLE_PIN		GPIO_Pin_15
+#define LED_POWER_TRANSFORM_DIR_PIN			GPIO_Pin_14
+
+
+
 typedef struct _tagStKeyState
 {
 	u8 u8KeyValue;		/* ֵ */
@@ -176,6 +184,7 @@ typedef struct _tagStLedScan
 void KeyLedInit(void);
 void KeyLedFlush(void);
 void ChangeLedState(u32 x, u32 y, bool boIsLight);
+void ChangeLedBlinkState(u32 x, u32 y, bool boIsBlink);
 void ChangeAllLedState(bool boIsLight);
 
 #endif

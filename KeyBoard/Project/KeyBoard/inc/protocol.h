@@ -32,8 +32,23 @@ enum
 	_YNA_Data3,
 	_YNA_CheckSum,
 };
-#define CAM_ADDR_MAX			4
 
+enum
+{
+	_PELCOD_Sync,
+	_PELCOD_Addr,
+	_PELCOD_Cmd1,
+	_PELCOD_Cmd2,
+	_PELCOD_Data1,
+	_PELCOD_Data2,
+	_PELCOD_CheckSum,
+};
+#define PELCOD_ZOOM_WIDE	0x40
+#define PELCOD_ZOOM_TELE	0x20
+#define PELCOD_DOWN			0x10
+#define PELCOD_UP			0x08
+#define PELCOD_LEFT			0x04
+#define PELCOD_RIGHT		0x02
 
 enum
 {
@@ -44,6 +59,13 @@ enum
 
 #define TOTAL_BLINK_CNT		3
 
+typedef enum _tagEmProtocol
+{
+	_Protocol_Visca,
+	_Protocol_PecloD,
+}EmProtocol;
+
+extern EmProtocol g_emProtocol;
 
 
 typedef bool (*PFun_KeyProcess)(StKeyMixIn *pKeyIn);
@@ -95,6 +117,7 @@ void YNAGetCheckSum(u8 *pBuf);
 bool KeyProcess(StKeyMixIn *pKeyIn);
 bool PCEchoProcess(u8 *pMsg);
 void TurnOnSwitchLed(void);
+bool ProtocolSelete(u8 u8Key);
 
 #endif
 

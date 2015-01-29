@@ -17,6 +17,18 @@
 #include "key_led.h"
 #include "adc_ctrl.h"
 #include "pwm.h"
+
+#include "code_switch.h"
+#include "key_led_ctrl.h"
+	
+#include "buzzer.h"
+	
+#include "user_init.h"
+#include "user_api.h"
+
+#include "key_led_table.h"
+
+#include "protocol.h"
 #include "flash_save.h"
 
 typedef struct _tagStSave
@@ -30,6 +42,7 @@ typedef struct _tagStSave
 	u16 u16VolumeDownLimit;
 	u16 u16LedOnLight;
 	u16 u16LedOffLight;
+	u16 u16Protocol;
 	u16 u16CheckDum;
 }StSave;
 
@@ -67,6 +80,7 @@ void ReadSaveData(void)
 		g_u16LedOnLight = stSave.u16LedOnLight;
 		g_u16LedOffLight = stSave.u16LedOffLight;
 
+		g_emProtocol = (EmProtocol)stSave.u16Protocol;
 		return;
 	}
 	
@@ -82,6 +96,8 @@ end:
 	
 	g_u16LedOnLight = 0;
 	g_u16LedOffLight = PWM_RESOLUTION;
+	g_emProtocol = _Protocol_Visca;
+	
 }
 bool WriteSaveData(void)
 {
@@ -103,6 +119,7 @@ bool WriteSaveData(void)
 	stSave.u16VolumeDownLimit = g_u16VolumeDownLimit;
 	stSave.u16LedOnLight = g_u16LedOnLight;
 	stSave.u16LedOffLight = g_u16LedOffLight;
+	stSave.u16Protocol = g_emProtocol;
 
 	
 	for (i = 0; i < CHECK_SIZE; i++)

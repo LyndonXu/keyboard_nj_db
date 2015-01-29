@@ -15,6 +15,6 @@ extern u32 g_u32BoolIsEncode;
 extern void __NOP(void);
 void ErrorHappend(s32 s32ErrorCode);
 u32 SysTimeDiff( u32 u32Begin, u32 u32End);
-
+void UartSendData(USART_TypeDef *pUart, const u8 *pBuf, u32 u32Length);
 
 #endif

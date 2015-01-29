@@ -13,5 +13,6 @@
 void PeripheralPinClkEnable(void);
 void OpenSpecialGPIO(void);
 void SysTickInit(void);
-
+void UART3Init(u32 u32Bandrate);
+void UART2Init(u32 u32Bandrate);
 #endif

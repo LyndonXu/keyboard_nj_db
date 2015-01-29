@@ -39,3 +39,48 @@ void SysTickInit(void) /* 1ms */
 	SysTick_Config(SystemCoreClock / 1000);
 }
 
+void UART3Init(u32 u32Bandrate)
+{
+	USART_InitTypeDef USART_InitStructure;
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+	USART_Cmd(USART3, DISABLE);
+
+	USART_StructInit(&USART_InitStructure);
+	USART_InitStructure.USART_BaudRate = u32Bandrate;
+	USART_Init(USART3, &USART_InitStructure);
+	USART_Cmd(USART3, ENABLE);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+}
+
+void UART2Init(u32 u32Bandrate)
+{
+	USART_InitTypeDef USART_InitStructure;
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+	USART_Cmd(USART2, DISABLE);
+
+	USART_StructInit(&USART_InitStructure);
+	USART_InitStructure.USART_BaudRate = u32Bandrate;
+	USART_Init(USART2, &USART_InitStructure);
+	USART_Cmd(USART2, ENABLE);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+}

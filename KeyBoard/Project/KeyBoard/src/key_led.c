@@ -205,6 +205,8 @@ static void KeyScanOnce(StKeyScan *pKey)
 
 		pKey->stKeyTmp[u32Cnt].u8KeyValue[i] = u16KeyValue & 0xFF;
 	}
+	c_pKeyPowerPort[i - 1]->BSRR = c_u16KeyPowerPin[i];
+
 	pKey->u32ScanCnt++;	
 }
 
@@ -420,12 +422,6 @@ static void LEDXPinInit(void)
 	}
 
 }
-#define LED_POWER_TRANSFORM_ENABLE_PORT		GPIOD
-#define LED_POWER_TRANSFORM_DIR_PORT		GPIOD
-
-#define LED_POWER_TRANSFORM_ENABLE_PIN		GPIO_Pin_15
-#define LED_POWER_TRANSFORM_DIR_PIN			GPIO_Pin_14
-
 /* LED 和 KEY 电源方向引脚初始化 */
 static void PowerPinInit(void)
 {	

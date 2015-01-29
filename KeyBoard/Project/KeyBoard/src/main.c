@@ -23,6 +23,7 @@
 #include "protocol.h"
 #include "message.h"
 #include "flash_save.h"
+#include "extern_io_ctrl.h"
 
 int main()
 {
@@ -46,7 +47,10 @@ int main()
 	BuzzerInit();
 	MessageUARTInit();
 	PWMCtrlInit();
+	ExternIOInit();
+	ExternIOClear();
 	
+	UART2Init(9600);
 
 	SysTickInit();
 
@@ -150,6 +154,13 @@ int main()
 				{
 					KeyBufGetEnd();
 					RedressLedOffLight();
+					break;
+				}
+				else if ((pKeyIn->unKeyMixIn.stKeyState[0].u8KeyValue == _Key_VI_V1)
+					 ||(pKeyIn->unKeyMixIn.stKeyState[0].u8KeyValue == _Key_VI_V2))
+				{
+					KeyBufGetEnd();
+					ProtocolSelete(pKeyIn->unKeyMixIn.stKeyState[0].u8KeyValue);
 					break;
 				}
 			}

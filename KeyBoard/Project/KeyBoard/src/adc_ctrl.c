@@ -335,15 +335,6 @@ static bool RockGetValue(StRockState *pRockState)
 }
 
 
-void PushRodSetValue(u8 u8Value)
-{
-	if (u8Value > PUSH_ROD_MAX_VALUE)
-	{
-		u8Value = PUSH_ROD_MAX_VALUE;
-	}
-	s_stPushRodState.u8PushRodLEDValue = u8Value / PUSH_ROD_DIFF;
-}
-
 u8 PushRodGetCurValue(void)
 {
 	return s_stPushRodState.u8PushRodValue;
@@ -355,7 +346,7 @@ static bool PushRodGetValue(StPushRodState *pPushRodState)
 {
 	u16 u16Value = ADCGetAverage(PUSH_ROD_CHANNEL);
 	u16 u16OldValue = pPushRodState->u8PushRodOldValue;
-
+	u16 u16PushRodRealValue;
 #if KEYBOARD_UNION
 	#define PUSH_ROD_DIFF_UNION	(4000 / (PUSH_ROD_MAX_VALUE + 1))
 	if (u16Value < 48)
@@ -389,28 +380,39 @@ static bool PushRodGetValue(StPushRodState *pPushRodState)
 	}
 	else if(u16Value <= g_u16UpLimit)
 	{
-		u16Value = PUSH_ROD_MAX_VALUE;
+		u16Value = PUSH_ROD_MAX_VALUE * g_u16Times;
 	}
 	else
 	{
 		u16Value =	g_u16DownLimit - u16Value;
-		u16Value /= g_u16Times;
 	}
+	
+	u16PushRodRealValue = pPushRodState->u16PushRodRealValue;
+	if (u16PushRodRealValue > u16Value)
+	{
+		u16 u16Tmp = u16PushRodRealValue - u16Value;
+		if (u16Tmp < (g_u16Times / 2) )
+		{
+			return false;
+		}
+	}
+	else
+	{
+		u16 u16Tmp = u16Value - u16PushRodRealValue;
+		if (u16Tmp < (g_u16Times / 2) )
+		{
+			return false;
+		}
+
+	}
+	u16PushRodRealValue = u16Value;
+
+	u16Value /= g_u16Times;
 	if (u16OldValue != u16Value)
 	{
-		if (g_boIsPushRodNeedReset)
-		{
-			u16Value -= u16Value % PUSH_ROD_DIFF;
-			if (u16Value != (pPushRodState->u8PushRodLEDValue * PUSH_ROD_DIFF))
-			{
-				pPushRodState->u8PushRodValue = pPushRodState->u8PushRodOldValue = u16Value;
-				return false;
-			}
-			g_boIsPushRodNeedReset = false;
-		}
 		pPushRodState->u8PushRodValue = pPushRodState->u8PushRodOldValue = u16Value;
+		pPushRodState->u16PushRodRealValue = u16PushRodRealValue;
 		return true;
-
 	}
 #endif
 	return false;
